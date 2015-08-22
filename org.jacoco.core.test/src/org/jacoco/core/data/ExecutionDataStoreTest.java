@@ -29,18 +29,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link ExecutionDataStore}.
+ * Unit tests for {@link ControlFlowExecutionDataStore}.
  */
 public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
-	private ExecutionDataStore store;
+	private ControlFlowExecutionDataStore store;
 
-	private Map<Long, ExecutionData> dataOutput;
+	private Map<Long, ControlFlowExecutionData> dataOutput;
 
 	@Before
 	public void setup() {
-		store = new ExecutionDataStore();
-		dataOutput = new HashMap<Long, ExecutionData>();
+		store = new ControlFlowExecutionDataStore();
+		dataOutput = new HashMap<Long, ControlFlowExecutionData>();
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testPut() {
 		final boolean[] probes = new boolean[] { false, false, true };
-		store.put(new ExecutionData(1000, "Sample", probes));
-		final ExecutionData data = store.get(1000);
+		store.put(new ControlFlowExecutionData(1000, "Sample", probes));
+		final ControlFlowExecutionData data = store.get(1000);
 		assertSame(probes, data.getProbes());
 		assertTrue(store.contains("Sample"));
 		store.accept(this);
@@ -66,22 +66,22 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testGetContents() {
 		final boolean[] probes = new boolean[] {};
-		final ExecutionData a = new ExecutionData(1000, "A", probes);
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(1000, "A", probes);
 		store.put(a);
-		final ExecutionData aa = new ExecutionData(1000, "A", probes);
+		final ControlFlowExecutionData aa = new ControlFlowExecutionData(1000, "A", probes);
 		store.put(aa);
-		final ExecutionData b = new ExecutionData(1001, "B", probes);
+		final ControlFlowExecutionData b = new ControlFlowExecutionData(1001, "B", probes);
 		store.put(b);
-		final Set<ExecutionData> actual = new HashSet<ExecutionData>(
+		final Set<ControlFlowExecutionData> actual = new HashSet<ControlFlowExecutionData>(
 				store.getContents());
-		final Set<ExecutionData> expected = new HashSet<ExecutionData>(
+		final Set<ControlFlowExecutionData> expected = new HashSet<ControlFlowExecutionData>(
 				Arrays.asList(a, b));
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testGetWithoutCreate() {
-		final ExecutionData data = new ExecutionData(1000, "Sample",
+		final ControlFlowExecutionData data = new ControlFlowExecutionData(1000, "Sample",
 				new boolean[] {});
 		store.put(data);
 		assertSame(data, store.get(1000));
@@ -90,7 +90,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testGetWithCreate() {
 		final Long id = Long.valueOf(1000);
-		final ExecutionData data = store.get(id, "Sample", 3);
+		final ControlFlowExecutionData data = store.get(id, "Sample", 3);
 		assertEquals(1000, data.getId());
 		assertEquals("Sample", data.getName());
 		assertEquals(3, data.getProbes().length);
@@ -104,30 +104,30 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test(expected = IllegalStateException.class)
 	public void testGetNegative1() {
 		final boolean[] data = new boolean[] { false, false, true };
-		store.put(new ExecutionData(1000, "Sample", data));
+		store.put(new ControlFlowExecutionData(1000, "Sample", data));
 		store.get(Long.valueOf(1000), "Other", 3);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testGetNegative2() {
 		final boolean[] data = new boolean[] { false, false, true };
-		store.put(new ExecutionData(1000, "Sample", data));
+		store.put(new ControlFlowExecutionData(1000, "Sample", data));
 		store.get(Long.valueOf(1000), "Sample", 4);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testPutNegative() {
 		final boolean[] data = new boolean[0];
-		store.put(new ExecutionData(1000, "Sample1", data));
-		store.put(new ExecutionData(1000, "Sample2", data));
+		store.put(new ControlFlowExecutionData(1000, "Sample1", data));
+		store.put(new ControlFlowExecutionData(1000, "Sample2", data));
 	}
 
 	@Test
 	public void testMerge() {
 		final boolean[] data1 = new boolean[] { false, true, false, true };
-		store.visitClassExecution(new ExecutionData(1000, "Sample", data1));
+		store.visitClassExecution(new ControlFlowExecutionData(1000, "Sample", data1));
 		final boolean[] data2 = new boolean[] { false, true, true, false };
-		store.visitClassExecution(new ExecutionData(1000, "Sample", data2));
+		store.visitClassExecution(new ControlFlowExecutionData(1000, "Sample", data2));
 
 		final boolean[] result = store.get(1000).getProbes();
 		assertFalse(result[0]);
@@ -139,17 +139,17 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test(expected = IllegalStateException.class)
 	public void testMergeNegative() {
 		final boolean[] data1 = new boolean[] { false, false };
-		store.visitClassExecution(new ExecutionData(1000, "Sample", data1));
+		store.visitClassExecution(new ControlFlowExecutionData(1000, "Sample", data1));
 		final boolean[] data2 = new boolean[] { false, false, false };
-		store.visitClassExecution(new ExecutionData(1000, "Sample", data2));
+		store.visitClassExecution(new ControlFlowExecutionData(1000, "Sample", data2));
 	}
 
 	@Test
 	public void testSubtract() {
 		final boolean[] data1 = new boolean[] { false, true, false, true };
-		store.put(new ExecutionData(1000, "Sample", data1));
+		store.put(new ControlFlowExecutionData(1000, "Sample", data1));
 		final boolean[] data2 = new boolean[] { false, false, true, true };
-		store.subtract(new ExecutionData(1000, "Sample", data2));
+		store.subtract(new ControlFlowExecutionData(1000, "Sample", data2));
 
 		final boolean[] result = store.get(1000).getProbes();
 		assertFalse(result[0]);
@@ -161,9 +161,9 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testSubtractOtherId() {
 		final boolean[] data1 = new boolean[] { false, true };
-		store.put(new ExecutionData(1000, "Sample1", data1));
+		store.put(new ControlFlowExecutionData(1000, "Sample1", data1));
 		final boolean[] data2 = new boolean[] { true, true };
-		store.subtract(new ExecutionData(2000, "Sample2", data2));
+		store.subtract(new ControlFlowExecutionData(2000, "Sample2", data2));
 
 		final boolean[] result = store.get(1000).getProbes();
 		assertFalse(result[0]);
@@ -175,11 +175,11 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testSubtractStore() {
 		final boolean[] data1 = new boolean[] { false, true, false, true };
-		store.put(new ExecutionData(1000, "Sample", data1));
+		store.put(new ControlFlowExecutionData(1000, "Sample", data1));
 
-		final ExecutionDataStore store2 = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore store2 = new ControlFlowExecutionDataStore();
 		final boolean[] data2 = new boolean[] { false, false, true, true };
-		store2.put(new ExecutionData(1000, "Sample", data2));
+		store2.put(new ControlFlowExecutionData(1000, "Sample", data2));
 
 		store.subtract(store2);
 
@@ -194,7 +194,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	public void testReset() throws InstantiationException,
 			IllegalAccessException {
 		final boolean[] data1 = new boolean[] { true, true, false };
-		store.put(new ExecutionData(1000, "Sample", data1));
+		store.put(new ControlFlowExecutionData(1000, "Sample", data1));
 		store.reset();
 		final boolean[] data2 = store.get(1000).getProbes();
 		assertNotNull(data2);
@@ -205,7 +205,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	// === IExecutionDataOutput ===
 
-	public void visitClassExecution(final ExecutionData data) {
+	public void visitClassExecution(final ControlFlowExecutionData data) {
 		dataOutput.put(Long.valueOf(data.getId()), data);
 	}
 

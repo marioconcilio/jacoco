@@ -18,7 +18,7 @@ import java.net.UnknownHostException;
 
 import org.jacoco.agent.rt.internal.IExceptionLogger;
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Output that opens TCP server socket. This controller uses the following agent
@@ -48,7 +48,7 @@ public class TcpServerOutput implements IAgentOutput {
 		this.logger = logger;
 	}
 
-	public void startup(final AgentOptions options, final RuntimeData data)
+	public void startup(final AgentOptions options, final AbstractRuntimeData data)
 			throws IOException {
 		serverSocket = createServerSocket(options);
 		worker = new Thread(new Runnable() {

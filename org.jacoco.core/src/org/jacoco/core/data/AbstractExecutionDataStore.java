@@ -25,27 +25,30 @@ import java.util.Set;
  * coverage date from multiple runs. A instance of this class is not thread
  * safe.
  */
-public final class ExecutionDataStore implements IExecutionDataVisitor {
+public abstract class AbstractExecutionDataStore implements
+		IExecutionDataVisitor {
 
-	private final Map<Long, ExecutionData> entries = new HashMap<Long, ExecutionData>();
+	// HLR TODO check if it is necessary to use ConcurrentHashMap
+	protected final Map<Long, ControlFlowExecutionData> entries = new HashMap<Long, ControlFlowExecutionData>();
 
-	private final Set<String> names = new HashSet<String>();
+	protected final Set<String> names = new HashSet<String>();
 
 	/**
-	 * Adds the given {@link ExecutionData} object into the store. If there is
-	 * already execution data with this same class id, this structure is merged
-	 * with the given one.
+	 * Adds the given {@link ControlFlowExecutionData} object into the store. If
+	 * there is already execution data with this same class id, this structure
+	 * is merged with the given one.
 	 * 
 	 * @param data
 	 *            execution data to add or merge
 	 * @throws IllegalStateException
-	 *             if the given {@link ExecutionData} object is not compatible
-	 *             to a corresponding one, that is already contained
-	 * @see ExecutionData#assertCompatibility(long, String, int)
+	 *             if the given {@link ControlFlowExecutionData} object is not
+	 *             compatible to a corresponding one, that is already contained
+	 * @see ControlFlowExecutionData#assertCompatibility(long, String, int)
 	 */
-	public void put(final ExecutionData data) throws IllegalStateException {
+	public void put(final ControlFlowExecutionData data)
+			throws IllegalStateException {
 		final Long id = Long.valueOf(data.getId());
-		final ExecutionData entry = entries.get(id);
+		final ControlFlowExecutionData entry = entries.get(id);
 		if (entry == null) {
 			entries.put(id, data);
 			names.add(data.getName());
@@ -55,21 +58,23 @@ public final class ExecutionDataStore implements IExecutionDataVisitor {
 	}
 
 	/**
-	 * Subtracts the probes in the given {@link ExecutionData} object from the
-	 * store. I.e. for all set probes in the given data object the corresponding
-	 * probes in this store will be unset. If there is no execution data with id
-	 * of the given data object this operation will have no effect.
+	 * Subtracts the probes in the given {@link ControlFlowExecutionData} object
+	 * from the store. I.e. for all set probes in the given data object the
+	 * corresponding probes in this store will be unset. If there is no
+	 * execution data with id of the given data object this operation will have
+	 * no effect.
 	 * 
 	 * @param data
 	 *            execution data to subtract
 	 * @throws IllegalStateException
-	 *             if the given {@link ExecutionData} object is not compatible
-	 *             to a corresponding one, that is already contained
-	 * @see ExecutionData#assertCompatibility(long, String, int)
+	 *             if the given {@link ControlFlowExecutionData} object is not
+	 *             compatible to a corresponding one, that is already contained
+	 * @see ControlFlowExecutionData#assertCompatibility(long, String, int)
 	 */
-	public void subtract(final ExecutionData data) throws IllegalStateException {
+	public void subtract(final ControlFlowExecutionData data)
+			throws IllegalStateException {
 		final Long id = Long.valueOf(data.getId());
-		final ExecutionData entry = entries.get(id);
+		final ControlFlowExecutionData entry = entries.get(id);
 		if (entry != null) {
 			entry.merge(data, false);
 		}
@@ -80,23 +85,23 @@ public final class ExecutionDataStore implements IExecutionDataVisitor {
 	 * 
 	 * @param store
 	 *            execution data store to subtract
-	 * @see #subtract(ExecutionData)
+	 * @see #subtract(ControlFlowExecutionData)
 	 */
-	public void subtract(final ExecutionDataStore store) {
-		for (final ExecutionData data : store.getContents()) {
+	public void subtract(final ControlFlowExecutionDataStore store) {
+		for (final ControlFlowExecutionData data : store.getContents()) {
 			subtract(data);
 		}
 	}
 
 	/**
-	 * Returns the {@link ExecutionData} entry with the given id if it exists in
-	 * this store.
+	 * Returns the {@link ControlFlowExecutionData} entry with the given id if
+	 * it exists in this store.
 	 * 
 	 * @param id
 	 *            class id
 	 * @return execution data or <code>null</code>
 	 */
-	public ExecutionData get(final long id) {
+	public ControlFlowExecutionData get(final long id) {
 		return entries.get(Long.valueOf(id));
 	}
 
@@ -125,25 +130,16 @@ public final class ExecutionDataStore implements IExecutionDataVisitor {
 	 *            probe data length
 	 * @return execution data
 	 */
-	public ExecutionData get(final Long id, final String name,
-			final int probecount) {
-		ExecutionData entry = entries.get(id);
-		if (entry == null) {
-			entry = new ExecutionData(id.longValue(), name, probecount);
-			entries.put(id, entry);
-			names.add(name);
-		} else {
-			entry.assertCompatibility(id.longValue(), name, probecount);
-		}
-		return entry;
-	}
+	public abstract ControlFlowExecutionData get(final Long id,
+			final String name, final int probecount);
 
 	/**
 	 * Resets all execution data probes, i.e. marks them as not executed. The
 	 * execution data objects itself are not removed.
 	 */
 	public void reset() {
-		for (final ExecutionData executionData : this.entries.values()) {
+		for (final ControlFlowExecutionData executionData : this.entries
+				.values()) {
 			executionData.reset();
 		}
 	}
@@ -153,7 +149,7 @@ public final class ExecutionDataStore implements IExecutionDataVisitor {
 	 * 
 	 * @return current contents
 	 */
-	public Collection<ExecutionData> getContents() {
+	public Collection<ControlFlowExecutionData> getContents() {
 		return entries.values();
 	}
 
@@ -164,14 +160,14 @@ public final class ExecutionDataStore implements IExecutionDataVisitor {
 	 *            interface to write content to
 	 */
 	public void accept(final IExecutionDataVisitor visitor) {
-		for (final ExecutionData data : entries.values()) {
+		for (final ControlFlowExecutionData data : entries.values()) {
 			visitor.visitClassExecution(data);
 		}
 	}
 
 	// === IExecutionDataVisitor ===
 
-	public void visitClassExecution(final ExecutionData data) {
+	public void visitClassExecution(final ControlFlowExecutionData data) {
 		put(data);
 	}
 }

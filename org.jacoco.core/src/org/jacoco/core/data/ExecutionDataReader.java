@@ -146,7 +146,7 @@ public class ExecutionDataReader {
 		final long id = in.readLong();
 		final String name = in.readUTF();
 		final boolean[] probes = in.readBooleanArray();
-		executionDataVisitor.visitClassExecution(new ExecutionData(id, name,
+		executionDataVisitor.visitClassExecution(new ControlFlowExecutionData(id, name,
 				probes));
 	}
 

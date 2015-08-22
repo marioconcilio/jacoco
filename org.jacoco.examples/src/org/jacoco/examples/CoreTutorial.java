@@ -16,16 +16,16 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.ICounter;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.LoggerRuntime;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 
 /**
  * Example usage of the JaCoCo core API. In this tutorial a single target class
@@ -118,7 +118,7 @@ public final class CoreTutorial {
 
 		// Now we're ready to run our instrumented class and need to startup the
 		// runtime first:
-		final RuntimeData data = new RuntimeData();
+		final ControlFlowRuntimeData data = new ControlFlowRuntimeData();
 		runtime.startup(data);
 
 		// In this tutorial we use a special class loader to directly load the
@@ -133,7 +133,7 @@ public final class CoreTutorial {
 
 		// At the end of test execution we collect execution data and shutdown
 		// the runtime:
-		final ExecutionDataStore executionData = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore executionData = new ControlFlowExecutionDataStore();
 		final SessionInfoStore sessionInfos = new SessionInfoStore();
 		data.collect(executionData, sessionInfos, false);
 		runtime.shutdown();
@@ -141,7 +141,7 @@ public final class CoreTutorial {
 		// Together with the original class definition we can calculate coverage
 		// information:
 		final CoverageBuilder coverageBuilder = new CoverageBuilder();
-		final Analyzer analyzer = new Analyzer(executionData, coverageBuilder);
+		final ControlFlowAnalyzer analyzer = new ControlFlowAnalyzer(executionData, coverageBuilder);
 		analyzer.analyzeClass(getTargetClass(targetName), targetName);
 
 		// Let's dump some metrics and line coverage information:

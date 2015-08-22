@@ -16,17 +16,17 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.IMethodCoverage;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.internal.analysis.CounterImpl;
 import org.jacoco.core.runtime.IRuntime;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.jacoco.core.runtime.SystemPropertiesRuntime;
 import org.jacoco.core.test.TargetLoader;
 import org.junit.After;
@@ -43,14 +43,14 @@ public class CyclomaticComplexityTest {
 		public void test(int arg);
 	}
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 	private IRuntime runtime;
 	private ClassReader reader;
 	private Target target;
 
 	@Before
 	public void setup() throws Exception {
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 		runtime = new SystemPropertiesRuntime();
 		runtime.startup(data);
 	}
@@ -261,9 +261,9 @@ public class CyclomaticComplexityTest {
 
 	private ICounter analyze() {
 		final CoverageBuilder builder = new CoverageBuilder();
-		final ExecutionDataStore store = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore store = new ControlFlowExecutionDataStore();
 		data.collect(store, new SessionInfoStore(), false);
-		final Analyzer analyzer = new Analyzer(store, builder);
+		final ControlFlowAnalyzer analyzer = new ControlFlowAnalyzer(store, builder);
 		analyzer.analyzeClass(reader);
 		final Collection<IClassCoverage> classes = builder.getClasses();
 		assertEquals(1, classes.size(), 0.0);

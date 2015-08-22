@@ -26,14 +26,14 @@ import java.util.List;
 
 import org.jacoco.agent.rt.internal.ExceptionRecorder;
 import org.jacoco.agent.rt.internal.output.TcpServerOutput;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.runtime.AgentOptions;
 import org.jacoco.core.runtime.RemoteControlReader;
 import org.jacoco.core.runtime.RemoteControlWriter;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class TcpServerOutputTest {
 
 	private TcpServerOutput controller;
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 
 	@Before
 	public void setup() throws Exception {
@@ -64,7 +64,7 @@ public class TcpServerOutputTest {
 				return serverSocket;
 			}
 		};
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 		controller.startup(options, data);
 	}
 
@@ -101,7 +101,7 @@ public class TcpServerOutputTest {
 		// Now the actual test starts:
 		controller.writeExecutionData(false);
 
-		final ExecutionDataStore execStore = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		remoteReader.setExecutionDataVisitor(execStore);
 		final SessionInfoStore infoStore = new SessionInfoStore();
 		remoteReader.setSessionInfoVisitor(infoStore);

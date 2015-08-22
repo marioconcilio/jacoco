@@ -22,13 +22,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 import org.jacoco.agent.rt.internal.output.TcpConnection;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.runtime.RemoteControlReader;
 import org.jacoco.core.runtime.RemoteControlWriter;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,14 +39,14 @@ public class TcpConnectionTest extends ExecutorTestBase {
 
 	private MockSocketConnection mockConnection;
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 
 	@Before
 	@Override
 	public void setup() throws Exception {
 		super.setup();
 		mockConnection = new MockSocketConnection();
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 	}
 
 	@Test(expected = IOException.class)
@@ -218,7 +218,7 @@ public class TcpConnectionTest extends ExecutorTestBase {
 		final RemoteControlReader remoteReader = new RemoteControlReader(
 				mockConnection.getSocketB().getInputStream());
 
-		final ExecutionDataStore execStore = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		remoteReader.setExecutionDataVisitor(execStore);
 		final SessionInfoStore infoStore = new SessionInfoStore();
 		remoteReader.setSessionInfoVisitor(infoStore);
@@ -257,7 +257,7 @@ public class TcpConnectionTest extends ExecutorTestBase {
 		final RemoteControlReader remoteReader = new RemoteControlReader(
 				mockConnection.getSocketB().getInputStream());
 
-		final ExecutionDataStore execStore = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		remoteReader.setExecutionDataVisitor(execStore);
 		final SessionInfoStore infoStore = new SessionInfoStore();
 		remoteReader.setSessionInfoVisitor(infoStore);

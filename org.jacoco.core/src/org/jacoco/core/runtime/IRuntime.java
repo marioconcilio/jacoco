@@ -26,7 +26,7 @@ public interface IRuntime extends IExecutionDataAccessorGenerator {
 	 * @throws Exception
 	 *             any internal problem during startup
 	 */
-	public void startup(RuntimeData data) throws Exception;
+	public void startup(AbstractRuntimeData data) throws Exception;
 
 	/**
 	 * Allows the coverage runtime to cleanup internals. This class should be

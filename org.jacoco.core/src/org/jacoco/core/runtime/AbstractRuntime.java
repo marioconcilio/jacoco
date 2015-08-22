@@ -19,12 +19,12 @@ import java.util.Random;
 public abstract class AbstractRuntime implements IRuntime {
 
 	/** access to the runtime data */
-	protected RuntimeData data;
+	protected AbstractRuntimeData data;
 
 	/**
 	 * Subclasses must call this method when overwriting it.
 	 */
-	public void startup(final RuntimeData data) throws Exception {
+	public void startup(final AbstractRuntimeData data) throws Exception {
 		this.data = data;
 	}
 

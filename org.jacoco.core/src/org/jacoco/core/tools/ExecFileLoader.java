@@ -21,18 +21,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.jacoco.core.data.ExecutionDataReader;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.SessionInfoStore;
 
 /**
  * Convenience utility for loading *.exec files into a
- * {@link ExecutionDataStore} and a {@link SessionInfoStore}.
+ * {@link ControlFlowExecutionDataStore} and a {@link SessionInfoStore}.
  */
 public class ExecFileLoader {
 
 	private final SessionInfoStore sessionInfos;
-	private final ExecutionDataStore executionData;
+	private final ControlFlowExecutionDataStore executionData;
 
 	/**
 	 * New instance to combine session infos and execution data from multiple
@@ -40,7 +40,7 @@ public class ExecFileLoader {
 	 */
 	public ExecFileLoader() {
 		sessionInfos = new SessionInfoStore();
-		executionData = new ExecutionDataStore();
+		executionData = new ControlFlowExecutionDataStore();
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class ExecFileLoader {
 	 * 
 	 * @return execution data store
 	 */
-	public ExecutionDataStore getExecutionDataStore() {
+	public ControlFlowExecutionDataStore getExecutionDataStore() {
 		return executionData;
 	}
 

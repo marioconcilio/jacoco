@@ -17,7 +17,7 @@ import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.List;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.report.ILanguageNames;
 import org.jacoco.report.IReportVisitor;
@@ -84,7 +84,7 @@ public class CSVFormatter {
 			}
 
 			public void visitInfo(final List<SessionInfo> sessionInfos,
-					final Collection<ExecutionData> executionData)
+					final Collection<ControlFlowExecutionData> executionData)
 					throws IOException {
 				// Info not used for CSV report
 			}

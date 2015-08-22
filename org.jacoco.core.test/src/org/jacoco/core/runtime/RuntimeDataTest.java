@@ -28,17 +28,17 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 /**
- * Unit tests for {@link RuntimeData}.
+ * Unit tests for {@link ControlFlowRuntimeData}.
  * 
  */
 public class RuntimeDataTest {
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 	private TestStorage storage;
 
 	@Before
 	public void setup() {
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 		storage = new TestStorage();
 	}
 
@@ -131,7 +131,7 @@ public class RuntimeDataTest {
 		mv = writer.visitMethod(Opcodes.ACC_PUBLIC, "call",
 				"()Ljava/lang/Object;", null, new String[0]);
 		mv.visitCode();
-		RuntimeData.generateArgumentArray(1000, "Sample", 15, mv);
+		ControlFlowRuntimeData.generateArgumentArray(1000, "Sample", 15, mv);
 		mv.visitInsn(Opcodes.ARETURN);
 		mv.visitMaxs(5, 1);
 		mv.visitEnd();
@@ -179,7 +179,7 @@ public class RuntimeDataTest {
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitFieldInsn(Opcodes.GETFIELD, "Sample", "access",
 				"Ljava/lang/Object;");
-		RuntimeData.generateAccessCall(1234, "Sample", 5, mv);
+		ControlFlowRuntimeData.generateAccessCall(1234, "Sample", 5, mv);
 		mv.visitInsn(Opcodes.ARETURN);
 		mv.visitMaxs(6, 1);
 		mv.visitEnd();

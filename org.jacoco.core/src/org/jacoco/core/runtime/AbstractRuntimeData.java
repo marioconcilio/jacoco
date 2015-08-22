@@ -11,8 +11,8 @@
  *******************************************************************************/
 package org.jacoco.core.runtime;
 
-import org.jacoco.core.data.ExecutionData;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.AbstractExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfo;
@@ -24,10 +24,10 @@ import org.objectweb.asm.Opcodes;
  * Container for runtime execution and meta data. All access to the runtime data
  * is thread safe.
  */
-public class RuntimeData {
+public abstract class AbstractRuntimeData {
 
 	/** store for execution data */
-	protected final ExecutionDataStore store;
+	protected AbstractExecutionDataStore store;
 
 	private long startTimeStamp;
 
@@ -36,8 +36,7 @@ public class RuntimeData {
 	/**
 	 * Creates a new runtime.
 	 */
-	public RuntimeData() {
-		store = new ExecutionDataStore();
+	public AbstractRuntimeData() {
 		sessionId = "<none>";
 		startTimeStamp = System.currentTimeMillis();
 	}
@@ -114,12 +113,8 @@ public class RuntimeData {
 	 *            probe data length
 	 * @return execution data
 	 */
-	public ExecutionData getExecutionData(final Long id, final String name,
-			final int probecount) {
-		synchronized (store) {
-			return store.get(id, name, probecount);
-		}
-	}
+	public abstract ControlFlowExecutionData getExecutionData(final Long id,
+			final String name, final int probecount);
 
 	/**
 	 * Retrieves the execution probe array for a given class. The passed
@@ -207,7 +202,7 @@ public class RuntimeData {
 	}
 
 	/**
-	 * Generates the code that calls a {@link RuntimeData} instance through the
+	 * Generates the code that calls a {@link ControlFlowRuntimeData} instance through the
 	 * JRE API method {@link Object#equals(Object)}. The code pops a
 	 * {@link Object} instance from the stack and pushes the probe array of type
 	 * <code>boolean[]</code> on the operand stack. The generated code requires

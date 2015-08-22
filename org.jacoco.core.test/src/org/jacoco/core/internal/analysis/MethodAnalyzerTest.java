@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import org.jacoco.core.analysis.ILine;
 import org.jacoco.core.analysis.IMethodCoverage;
+import org.jacoco.core.internal.analysis.line.MethodAnalyzer;
 import org.jacoco.core.internal.flow.IProbeIdGenerator;
 import org.jacoco.core.internal.flow.LabelFlowAnalyzer;
 import org.jacoco.core.internal.flow.MethodProbesAdapter;

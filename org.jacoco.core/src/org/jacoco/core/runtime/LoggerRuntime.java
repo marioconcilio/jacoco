@@ -76,7 +76,8 @@ public class LoggerRuntime extends AbstractRuntime {
 
 		// 1. Create parameter array:
 
-		RuntimeData.generateArgumentArray(classid, classname, probecount, mv);
+		AbstractRuntimeData.generateArgumentArray(classid, classname,
+				probecount, mv);
 
 		// Stack[0]: [Ljava/lang/Object;
 
@@ -154,7 +155,7 @@ public class LoggerRuntime extends AbstractRuntime {
 	}
 
 	@Override
-	public void startup(final RuntimeData data) throws Exception {
+	public void startup(final AbstractRuntimeData data) throws Exception {
 		super.startup(data);
 		this.logger.addHandler(handler);
 	}

@@ -16,7 +16,7 @@ import java.net.Socket;
 
 import org.jacoco.agent.rt.internal.IExceptionLogger;
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Output that connects to a TCP port. This controller uses the following
@@ -44,7 +44,7 @@ public class TcpClientOutput implements IAgentOutput {
 		this.logger = logger;
 	}
 
-	public void startup(final AgentOptions options, final RuntimeData data)
+	public void startup(final AgentOptions options, final AbstractRuntimeData data)
 			throws IOException {
 		final Socket socket = createSocket(options);
 		connection = new TcpConnection(socket, data);

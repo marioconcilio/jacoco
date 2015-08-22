@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.LoggerRuntime;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.jacoco.core.test.TargetLoader;
 import org.objectweb.asm.ClassReader;
 
@@ -39,7 +39,7 @@ public class ExecuteInstrumentedCodeScenario extends TimedScenario {
 	protected Callable<Void> getInstrumentedCallable() throws Exception {
 		ClassReader reader = new ClassReader(TargetLoader.getClassData(target));
 		IRuntime runtime = new LoggerRuntime();
-		runtime.startup(new RuntimeData());
+		runtime.startup(new ControlFlowRuntimeData());
 		final Instrumenter instr = new Instrumenter(runtime);
 		final byte[] instrumentedBuffer = instr.instrument(reader);
 		final TargetLoader loader = new TargetLoader();

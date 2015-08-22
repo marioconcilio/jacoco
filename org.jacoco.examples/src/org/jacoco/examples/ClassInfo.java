@@ -15,10 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.ICoverageVisitor;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 
 /**
  * This example reads Java class files, directories or JARs given as program
@@ -27,7 +27,7 @@ import org.jacoco.core.data.ExecutionDataStore;
 public final class ClassInfo implements ICoverageVisitor {
 
 	private final PrintStream out;
-	private final Analyzer analyzer;
+	private final ControlFlowAnalyzer analyzer;
 
 	/**
 	 * Creates a new example instance printing to the given stream.
@@ -37,7 +37,7 @@ public final class ClassInfo implements ICoverageVisitor {
 	 */
 	public ClassInfo(final PrintStream out) {
 		this.out = out;
-		analyzer = new Analyzer(new ExecutionDataStore(), this);
+		analyzer = new ControlFlowAnalyzer(new ControlFlowExecutionDataStore(), this);
 	}
 
 	/**

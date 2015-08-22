@@ -33,7 +33,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.jacoco.core.analysis.AnalyzerTest;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.jacoco.core.runtime.SystemPropertiesRuntime;
 import org.jacoco.core.test.TargetLoader;
 import org.junit.After;
@@ -73,7 +73,7 @@ public class InstrumenterTest {
 	public void setup() throws Exception {
 		runtime = new SystemPropertiesRuntime();
 		instrumenter = new Instrumenter(runtime);
-		runtime.startup(new RuntimeData());
+		runtime.startup(new ControlFlowRuntimeData());
 	}
 
 	@After

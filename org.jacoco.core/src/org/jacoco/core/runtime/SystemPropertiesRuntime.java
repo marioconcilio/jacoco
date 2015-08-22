@@ -55,7 +55,7 @@ public class SystemPropertiesRuntime extends AbstractRuntime {
 
 		// Stack[0]: Ljava/lang/Object;
 
-		RuntimeData.generateAccessCall(classid, classname, probecount, mv);
+		AbstractRuntimeData.generateAccessCall(classid, classname, probecount, mv);
 
 		// Stack[0]: [Z
 
@@ -63,7 +63,7 @@ public class SystemPropertiesRuntime extends AbstractRuntime {
 	}
 
 	@Override
-	public void startup(final RuntimeData data) throws Exception {
+	public void startup(final AbstractRuntimeData data) throws Exception {
 		super.startup(data);
 		System.getProperties().put(key, data);
 	}

@@ -31,12 +31,12 @@ import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.Union;
 import org.apache.tools.ant.util.FileUtils;
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.ICoverageNode;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.tools.ExecFileLoader;
 import org.jacoco.report.FileMultiReportOutput;
@@ -417,7 +417,7 @@ public class ReportTask extends Task {
 
 	private SessionInfoStore sessionInfoStore;
 
-	private ExecutionDataStore executionDataStore;
+	private ControlFlowExecutionDataStore executionDataStore;
 
 	private final GroupElement structure = new GroupElement();
 
@@ -560,7 +560,7 @@ public class ReportTask extends Task {
 	private IBundleCoverage createBundle(final GroupElement group)
 			throws IOException {
 		final CoverageBuilder builder = new CoverageBuilder();
-		final Analyzer analyzer = new Analyzer(executionDataStore, builder);
+		final ControlFlowAnalyzer analyzer = new ControlFlowAnalyzer(executionDataStore, builder);
 		for (final Iterator<?> i = group.classfiles.iterator(); i.hasNext();) {
 			final Resource resource = (Resource) i.next();
 			if (resource.isDirectory() && resource instanceof FileResource) {

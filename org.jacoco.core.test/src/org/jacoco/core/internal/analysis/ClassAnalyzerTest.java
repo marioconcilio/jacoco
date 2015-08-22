@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.jacoco.core.analysis.IMethodCoverage;
+import org.jacoco.core.internal.analysis.line.ClassAnalyzer;
 import org.jacoco.core.internal.flow.MethodProbesVisitor;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.junit.Before;

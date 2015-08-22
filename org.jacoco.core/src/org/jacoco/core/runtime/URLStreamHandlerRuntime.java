@@ -44,7 +44,7 @@ public class URLStreamHandlerRuntime extends AbstractRuntime {
 	}
 
 	@Override
-	public void startup(final RuntimeData data) throws Exception {
+	public void startup(final AbstractRuntimeData data) throws Exception {
 		super.startup(data);
 		handlers = getHandlersReference();
 		handlers.put(protocol, handler);
@@ -78,7 +78,7 @@ public class URLStreamHandlerRuntime extends AbstractRuntime {
 		// connection.equals(args);
 		// final byte[] probedata = (byte[]) args[0];
 
-		RuntimeData.generateArgumentArray(classid, classname, probecount, mv);
+		AbstractRuntimeData.generateArgumentArray(classid, classname, probecount, mv);
 		mv.visitInsn(Opcodes.DUP);
 
 		// Stack[1]: [Ljava/lang/Object;

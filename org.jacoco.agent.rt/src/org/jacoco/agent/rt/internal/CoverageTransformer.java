@@ -33,7 +33,8 @@ public class CoverageTransformer implements ClassFileTransformer {
 		AGENT_PREFIX = toVMName(name.substring(0, name.lastIndexOf('.')));
 	}
 
-	private final Instrumenter instrumenter;
+	private Instrumenter instrumenter = null;
+	private br.usp.each.saeg.badua.core.instr.Instrumenter instrumenterdf = null;
 
 	private final IExceptionLogger logger;
 
@@ -47,6 +48,8 @@ public class CoverageTransformer implements ClassFileTransformer {
 
 	private final boolean includeBootstrapClasses;
 
+	private final boolean dataflow;
+
 	/**
 	 * New transformer with the given delegates.
 	 * 
@@ -59,7 +62,14 @@ public class CoverageTransformer implements ClassFileTransformer {
 	 */
 	public CoverageTransformer(final IRuntime runtime,
 			final AgentOptions options, final IExceptionLogger logger) {
-		this.instrumenter = new Instrumenter(runtime);
+		dataflow = options.isDataflow();
+		if (dataflow) {
+			System.out.println("Instrumentation with BA-DUA");
+			this.instrumenterdf = new br.usp.each.saeg.badua.core.instr.Instrumenter(
+					DFRT.class);
+		} else {
+			this.instrumenter = new Instrumenter(runtime);
+		}
 		this.logger = logger;
 		// Class names will be reported in VM notation:
 		includes = new WildcardMatcher(toVMName(options.getIncludes()));

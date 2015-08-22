@@ -18,7 +18,7 @@ import java.io.OutputStream;
 
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Local only agent output that will write coverage data to the filesystem. This
@@ -30,13 +30,13 @@ import org.jacoco.core.runtime.RuntimeData;
  */
 public class FileOutput implements IAgentOutput {
 
-	private RuntimeData data;
+	private AbstractRuntimeData data;
 
 	private File destFile;
 
 	private boolean append;
 
-	public final void startup(final AgentOptions options, final RuntimeData data)
+	public final void startup(final AgentOptions options, final AbstractRuntimeData data)
 			throws IOException {
 		this.data = data;
 		this.destFile = new File(options.getDestfile()).getAbsoluteFile();

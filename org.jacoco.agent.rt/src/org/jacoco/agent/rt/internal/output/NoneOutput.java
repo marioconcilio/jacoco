@@ -12,14 +12,14 @@
 package org.jacoco.agent.rt.internal.output;
 
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Output that does nothing.
  */
 public class NoneOutput implements IAgentOutput {
 
-	public final void startup(final AgentOptions options, final RuntimeData data) {
+	public final void startup(final AgentOptions options, final AbstractRuntimeData data) {
 		// Nothing to do
 	}
 

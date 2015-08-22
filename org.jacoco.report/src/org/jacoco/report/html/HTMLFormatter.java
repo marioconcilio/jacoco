@@ -18,7 +18,7 @@ import java.util.Locale;
 
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.analysis.ICoverageNode.CounterEntity;
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.report.ILanguageNames;
 import org.jacoco.report.IMultiReportOutput;
@@ -193,12 +193,12 @@ public class HTMLFormatter implements IHTMLReportContext {
 		return new IReportVisitor() {
 
 			private List<SessionInfo> sessionInfos;
-			private Collection<ExecutionData> executionData;
+			private Collection<ControlFlowExecutionData> executionData;
 
 			private HTMLGroupVisitor groupHandler;
 
 			public void visitInfo(final List<SessionInfo> sessionInfos,
-					final Collection<ExecutionData> executionData)
+					final Collection<ControlFlowExecutionData> executionData)
 					throws IOException {
 				this.sessionInfos = sessionInfos;
 				this.executionData = executionData;

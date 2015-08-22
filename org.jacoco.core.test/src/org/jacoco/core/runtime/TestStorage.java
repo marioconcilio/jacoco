@@ -17,14 +17,14 @@ import static org.junit.Assert.assertSame;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfo;
 
 class TestStorage implements IExecutionDataVisitor, ISessionInfoVisitor {
 
-	private final Map<Long, ExecutionData> data = new HashMap<Long, ExecutionData>();
+	private final Map<Long, ControlFlowExecutionData> data = new HashMap<Long, ControlFlowExecutionData>();
 
 	private SessionInfo info;
 
@@ -32,7 +32,7 @@ class TestStorage implements IExecutionDataVisitor, ISessionInfoVisitor {
 		assertEquals(size, data.size(), 0.0);
 	}
 
-	public ExecutionData getData(long classId) {
+	public ControlFlowExecutionData getData(long classId) {
 		return data.get(Long.valueOf(classId));
 	}
 
@@ -46,7 +46,7 @@ class TestStorage implements IExecutionDataVisitor, ISessionInfoVisitor {
 
 	// === ICoverageDataVisitor ===
 
-	public void visitClassExecution(final ExecutionData ed) {
+	public void visitClassExecution(final ControlFlowExecutionData ed) {
 		data.put(Long.valueOf(ed.getId()), ed);
 	}
 

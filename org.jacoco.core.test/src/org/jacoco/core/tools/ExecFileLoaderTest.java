@@ -22,9 +22,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.ExecutionDataReader;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.data.SessionInfoStore;
@@ -119,7 +119,7 @@ public class ExecFileLoaderTest {
 		final FileOutputStream out = new FileOutputStream(file);
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		final int value = id.length();
-		writer.visitClassExecution(new ExecutionData(value, id, new boolean[0]));
+		writer.visitClassExecution(new ControlFlowExecutionData(value, id, new boolean[0]));
 		writer.visitSessionInfo(new SessionInfo(id, value, value));
 		out.close();
 		return file;
@@ -133,7 +133,7 @@ public class ExecFileLoaderTest {
 	private void assertFileContents(File file, String... expected)
 			throws IOException {
 		final InputStream in = new FileInputStream(file);
-		final ExecutionDataStore execStore = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		final SessionInfoStore sessionStore = new SessionInfoStore();
 		final ExecutionDataReader reader = new ExecutionDataReader(in);
 		reader.setExecutionDataVisitor(execStore);
@@ -142,7 +142,7 @@ public class ExecFileLoaderTest {
 		assertContents(execStore, sessionStore, expected);
 	}
 
-	private void assertContents(ExecutionDataStore execStore,
+	private void assertContents(ControlFlowExecutionDataStore execStore,
 			SessionInfoStore sessionStore, String... expected) {
 		final List<SessionInfo> infos = sessionStore.getInfos();
 

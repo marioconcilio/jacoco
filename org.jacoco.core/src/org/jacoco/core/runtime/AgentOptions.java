@@ -176,10 +176,15 @@ public final class AgentOptions {
 	 */
 	public static final String JMX = "jmx";
 
+	/**
+	 * Specifies if it will use dataflow coverage. Defaut is <code>false</code>
+	 */
+	public static final String DATAFLOW = "dataflow";
+
 	private static final Collection<String> VALID_OPTIONS = Arrays.asList(
 			DESTFILE, APPEND, INCLUDES, EXCLUDES, EXCLCLASSLOADER,
 			INCLBOOTSTRAPCLASSES, SESSIONID, DUMPONEXIT, OUTPUT, ADDRESS, PORT,
-			CLASSDUMPDIR, JMX);
+			CLASSDUMPDIR, JMX, DATAFLOW);
 
 	private final Map<String, String> options;
 
@@ -520,6 +525,20 @@ public final class AgentOptions {
 	 */
 	public void setJmx(final boolean jmx) {
 		setOption(JMX, jmx);
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isDataflow() {
+		return getOption(DATAFLOW, false);
+	}
+
+	/**
+	 * @param dataflow
+	 */
+	public void setDataflow(final boolean dataflow) {
+		setOption(DATAFLOW, dataflow);
 	}
 
 	private void setOption(final String key, final int value) {

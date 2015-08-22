@@ -34,7 +34,7 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.internal.data.CRC64;
 import org.jacoco.core.test.TargetLoader;
 import org.junit.Before;
@@ -43,18 +43,18 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * Unit tests for {@link Analyzer}.
+ * Unit tests for {@link ControlFlowAnalyzer}.
  */
 public class AnalyzerTest {
 
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	private Analyzer analyzer;
+	private ControlFlowAnalyzer analyzer;
 
 	private Map<String, IClassCoverage> classes;
 
-	private ExecutionDataStore executionData;
+	private ControlFlowExecutionDataStore executionData;
 
 	private class EmptyStructureVisitor implements ICoverageVisitor {
 
@@ -68,8 +68,8 @@ public class AnalyzerTest {
 	@Before
 	public void setup() {
 		classes = new HashMap<String, IClassCoverage>();
-		executionData = new ExecutionDataStore();
-		analyzer = new Analyzer(executionData, new EmptyStructureVisitor());
+		executionData = new ControlFlowExecutionDataStore();
+		analyzer = new ControlFlowAnalyzer(executionData, new EmptyStructureVisitor());
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class AnalyzerTest {
 
 	@Test
 	public void testAnalyzeAll_Path() throws IOException {
-		createClassfile("bin1", Analyzer.class);
+		createClassfile("bin1", ControlFlowAnalyzer.class);
 		createClassfile("bin2", AnalyzerTest.class);
 		String path = "bin1" + File.pathSeparator + "bin2";
 		final int count = analyzer.analyzeAll(path, folder.getRoot());

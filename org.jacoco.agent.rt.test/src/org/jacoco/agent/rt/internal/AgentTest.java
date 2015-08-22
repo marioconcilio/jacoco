@@ -27,18 +27,18 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.jacoco.agent.rt.internal.output.IAgentOutput;
 import org.jacoco.agent.rt.internal.output.FileOutput;
+import org.jacoco.agent.rt.internal.output.IAgentOutput;
 import org.jacoco.agent.rt.internal.output.NoneOutput;
 import org.jacoco.agent.rt.internal.output.TcpClientOutput;
 import org.jacoco.agent.rt.internal.output.TcpServerOutput;
 import org.jacoco.core.JaCoCo;
 import org.jacoco.core.data.ExecutionDataReader;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 import org.jacoco.core.runtime.AgentOptions;
 import org.jacoco.core.runtime.AgentOptions.OutputMode;
-import org.jacoco.core.runtime.RuntimeData;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -70,8 +70,7 @@ public class AgentTest implements IExceptionLogger {
 		Agent agent = new Agent(options, this);
 
 		options.setOutput(OutputMode.file);
-		assertEquals(FileOutput.class, agent.createAgentOutput()
-				.getClass());
+		assertEquals(FileOutput.class, agent.createAgentOutput().getClass());
 
 		options.setOutput(OutputMode.tcpserver);
 		assertEquals(TcpServerOutput.class, agent.createAgentOutput()
@@ -82,8 +81,7 @@ public class AgentTest implements IExceptionLogger {
 				.getClass());
 
 		options.setOutput(OutputMode.none);
-		assertEquals(NoneOutput.class, agent.createAgentOutput()
-				.getClass());
+		assertEquals(NoneOutput.class, agent.createAgentOutput().getClass());
 	}
 
 	@Test
@@ -108,7 +106,8 @@ public class AgentTest implements IExceptionLogger {
 			@Override
 			IAgentOutput createAgentOutput() {
 				return new IAgentOutput() {
-					public void startup(AgentOptions options, RuntimeData data) {
+					public void startup(AgentOptions options,
+							AbstractRuntimeData data) {
 					}
 
 					public void shutdown() throws Exception {
@@ -212,7 +211,7 @@ public class AgentTest implements IExceptionLogger {
 		// ensure reset has been executed
 		assertFalse(probes[0]);
 
-		ExecutionDataStore execStore = new ExecutionDataStore();
+		ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		SessionInfoStore sessionStore = new SessionInfoStore();
 
 		ExecutionDataReader reader = new ExecutionDataReader(
@@ -233,7 +232,8 @@ public class AgentTest implements IExceptionLogger {
 			@Override
 			IAgentOutput createAgentOutput() {
 				return new IAgentOutput() {
-					public void startup(AgentOptions options, RuntimeData data) {
+					public void startup(AgentOptions options,
+							AbstractRuntimeData data) {
 					}
 
 					public void shutdown() throws Exception {

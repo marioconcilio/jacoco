@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.report.IReportVisitor;
 import org.jacoco.report.MemoryOutput;
@@ -44,7 +44,7 @@ public class XMLFormatterTest {
 
 	private List<SessionInfo> infos;
 
-	private Collection<ExecutionData> data;
+	private Collection<ControlFlowExecutionData> data;
 
 	@Before
 	public void setup() {
@@ -52,7 +52,7 @@ public class XMLFormatterTest {
 		formatter = new XMLFormatter();
 		output = new MemoryOutput();
 		infos = new ArrayList<SessionInfo>();
-		data = new ArrayList<ExecutionData>();
+		data = new ArrayList<ControlFlowExecutionData>();
 	}
 
 	@After

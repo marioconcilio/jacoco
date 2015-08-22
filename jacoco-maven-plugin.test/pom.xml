@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jacoco</groupId>
+    <groupId>br.usp.each.saeg</groupId>
     <artifactId>org.jacoco.tests</artifactId>
     <version>0.7.6-SNAPSHOT</version>
     <relativePath>../org.jacoco.tests</relativePath>

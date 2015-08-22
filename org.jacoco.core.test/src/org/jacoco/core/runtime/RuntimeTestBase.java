@@ -33,7 +33,7 @@ import org.objectweb.asm.commons.Method;
  */
 public abstract class RuntimeTestBase {
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 
 	private IRuntime runtime;
 
@@ -43,7 +43,7 @@ public abstract class RuntimeTestBase {
 
 	@Before
 	public void setup() throws Exception {
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 		runtime = createRuntime();
 		runtime.startup(data);
 		storage = new TestStorage();

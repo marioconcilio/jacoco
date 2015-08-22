@@ -25,9 +25,11 @@ import org.jacoco.agent.rt.internal.output.TcpServerOutput;
 import org.jacoco.core.JaCoCo;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.runtime.AbstractRuntime;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 import org.jacoco.core.runtime.AgentOptions;
 import org.jacoco.core.runtime.AgentOptions.OutputMode;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.DataFlowRuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 
 /**
  * The agent manages the life cycle of JaCoCo runtime.
@@ -78,7 +80,7 @@ public class Agent implements IAgent {
 
 	private final IExceptionLogger logger;
 
-	private final RuntimeData data;
+	private final AbstractRuntimeData data;
 
 	private IAgentOutput output;
 
@@ -95,7 +97,12 @@ public class Agent implements IAgent {
 	Agent(final AgentOptions options, final IExceptionLogger logger) {
 		this.options = options;
 		this.logger = logger;
-		this.data = new RuntimeData();
+
+		if (options.isDataflow()) {
+			this.data = new DataFlowRuntimeData();
+		} else {
+			this.data = new ControlFlowRuntimeData();
+		}
 	}
 
 	/**
@@ -103,7 +110,7 @@ public class Agent implements IAgent {
 	 * 
 	 * @return runtime data for this agent instance
 	 */
-	public RuntimeData getData() {
+	public AbstractRuntimeData getData() {
 		return data;
 	}
 

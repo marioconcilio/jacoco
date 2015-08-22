@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
@@ -68,7 +68,7 @@ public final class ExecDump {
 			}
 		});
 		reader.setExecutionDataVisitor(new IExecutionDataVisitor() {
-			public void visitClassExecution(final ExecutionData data) {
+			public void visitClassExecution(final ControlFlowExecutionData data) {
 				out.printf("%016x  %3d of %3d   %s%n",
 						Long.valueOf(data.getId()),
 						Integer.valueOf(getHitCount(data.getProbes())),

@@ -9,7 +9,7 @@
  *    Marc R. Hoffmann - initial API and implementation
  *    
  *******************************************************************************/
-package org.jacoco.core.internal.analysis;
+package org.jacoco.core.internal.analysis.line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ import java.util.List;
 import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.IMethodCoverage;
 import org.jacoco.core.analysis.ISourceNode;
+import org.jacoco.core.internal.analysis.CounterImpl;
+import org.jacoco.core.internal.analysis.MethodCoverageImpl;
 import org.jacoco.core.internal.flow.IFrame;
 import org.jacoco.core.internal.flow.Instruction;
 import org.jacoco.core.internal.flow.LabelInfo;

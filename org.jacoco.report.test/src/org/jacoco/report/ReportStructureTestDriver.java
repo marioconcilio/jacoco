@@ -21,7 +21,7 @@ import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.IMethodCoverage;
 import org.jacoco.core.analysis.IPackageCoverage;
 import org.jacoco.core.analysis.ISourceFileCoverage;
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.internal.analysis.BundleCoverageImpl;
 import org.jacoco.core.internal.analysis.ClassCoverageImpl;
@@ -38,7 +38,7 @@ public class ReportStructureTestDriver {
 
 	private final List<SessionInfo> sessions = Collections.emptyList();
 
-	private final Collection<ExecutionData> executionData = Collections
+	private final Collection<ControlFlowExecutionData> executionData = Collections
 			.emptyList();
 
 	public final ISourceFileLocator sourceFileLocator = new ISourceFileLocator() {

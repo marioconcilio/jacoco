@@ -14,7 +14,7 @@ package org.jacoco.agent.rt.internal;
 import java.util.Properties;
 
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * The API for classes instrumented in "offline" mode. The agent configuration
@@ -22,7 +22,7 @@ import org.jacoco.core.runtime.RuntimeData;
  */
 public final class Offline {
 
-	private static final RuntimeData DATA;
+	private static final AbstractRuntimeData DATA;
 	private static final String CONFIG_RESOURCE = "/jacoco-agent.properties";
 
 	static {

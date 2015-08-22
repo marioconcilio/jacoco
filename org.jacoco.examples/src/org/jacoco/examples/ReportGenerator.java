@@ -14,7 +14,7 @@ package org.jacoco.examples;
 import java.io.File;
 import java.io.IOException;
 
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.tools.ExecFileLoader;
@@ -111,7 +111,7 @@ public class ReportGenerator {
 
 	private IBundleCoverage analyzeStructure() throws IOException {
 		final CoverageBuilder coverageBuilder = new CoverageBuilder();
-		final Analyzer analyzer = new Analyzer(
+		final ControlFlowAnalyzer analyzer = new ControlFlowAnalyzer(
 				execFileLoader.getExecutionDataStore(), coverageBuilder);
 
 		analyzer.analyzeAll(classesDirectory);

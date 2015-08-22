@@ -23,13 +23,13 @@ import java.util.List;
 import org.jacoco.agent.rt.internal.ExceptionRecorder;
 import org.jacoco.agent.rt.internal.output.IAgentOutput;
 import org.jacoco.agent.rt.internal.output.TcpClientOutput;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.runtime.AgentOptions;
 import org.jacoco.core.runtime.RemoteControlReader;
 import org.jacoco.core.runtime.RemoteControlWriter;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class TcpClientOutputTest {
 
 	private RemoteControlReader remoteReader;
 
-	private RuntimeData data;
+	private ControlFlowRuntimeData data;
 
 	@Before
 	public void setup() throws Exception {
@@ -63,7 +63,7 @@ public class TcpClientOutputTest {
 				return con.getSocketA();
 			}
 		};
-		data = new RuntimeData();
+		data = new ControlFlowRuntimeData();
 		controller.startup(new AgentOptions(), data);
 		remoteReader = new RemoteControlReader(remoteSocket.getInputStream());
 	}
@@ -98,7 +98,7 @@ public class TcpClientOutputTest {
 
 		controller.writeExecutionData(false);
 
-		final ExecutionDataStore execStore = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore execStore = new ControlFlowExecutionDataStore();
 		remoteReader.setExecutionDataVisitor(execStore);
 		final SessionInfoStore infoStore = new SessionInfoStore();
 		remoteReader.setSessionInfoVisitor(infoStore);

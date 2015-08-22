@@ -13,7 +13,7 @@ package org.jacoco.ant;
 
 import java.io.File;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.tools.ExecFileLoader;
 
 /**
@@ -26,7 +26,7 @@ public class DumpExecClassNames {
 		for (String f : args) {
 			loader.load(new File(f));
 		}
-		for (ExecutionData d : loader.getExecutionDataStore().getContents()) {
+		for (ControlFlowExecutionData d : loader.getExecutionDataStore().getContents()) {
 			System.out.println(d.getName());
 		}
 	}

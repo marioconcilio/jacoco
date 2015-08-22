@@ -9,9 +9,11 @@
  *    Marc R. Hoffmann - initial API and implementation
  *    
  *******************************************************************************/
-package org.jacoco.core.internal.analysis;
+package org.jacoco.core.internal.analysis.line;
 
 import org.jacoco.core.analysis.IMethodCoverage;
+import org.jacoco.core.internal.analysis.ClassCoverageImpl;
+import org.jacoco.core.internal.analysis.StringPool;
 import org.jacoco.core.internal.flow.ClassProbesVisitor;
 import org.jacoco.core.internal.flow.MethodProbesVisitor;
 import org.jacoco.core.internal.instr.InstrSupport;

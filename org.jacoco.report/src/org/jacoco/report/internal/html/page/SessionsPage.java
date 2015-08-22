@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.report.ILanguageNames;
 import org.jacoco.report.internal.ReportOutputFolder;
@@ -48,7 +48,7 @@ public class SessionsPage extends ReportPage {
 
 	private final DateFormat dateFormat;
 
-	private final List<ExecutionData> executionData;
+	private final List<ControlFlowExecutionData> executionData;
 
 	private final ElementIndex index;
 
@@ -69,18 +69,18 @@ public class SessionsPage extends ReportPage {
 	 *            settings context
 	 */
 	public SessionsPage(final List<SessionInfo> sessionInfos,
-			final Collection<ExecutionData> executionData,
+			final Collection<ControlFlowExecutionData> executionData,
 			final ElementIndex index, final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
 		super(parent, folder, context);
 		this.sessionInfos = sessionInfos;
-		this.executionData = new ArrayList<ExecutionData>(executionData);
+		this.executionData = new ArrayList<ControlFlowExecutionData>(executionData);
 		this.index = index;
 		this.dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT,
 				DateFormat.DEFAULT, context.getLocale());
 		final ILanguageNames names = context.getLanguageNames();
-		Collections.sort(this.executionData, new Comparator<ExecutionData>() {
-			public int compare(final ExecutionData e1, final ExecutionData e2) {
+		Collections.sort(this.executionData, new Comparator<ControlFlowExecutionData>() {
+			public int compare(final ControlFlowExecutionData e1, final ControlFlowExecutionData e2) {
 				return names.getQualifiedClassName(e1.getName()).compareTo(
 						names.getQualifiedClassName(e2.getName()));
 			}
@@ -129,7 +129,7 @@ public class SessionsPage extends ReportPage {
 		}
 		final HTMLElement tbody = table.tbody();
 		final ILanguageNames names = context.getLanguageNames();
-		for (final ExecutionData e : executionData) {
+		for (final ControlFlowExecutionData e : executionData) {
 			final HTMLElement tr = tbody.tr();
 			final String link = index.getLinkToClass(e.getId());
 			final String qualifiedName = names.getQualifiedClassName(e

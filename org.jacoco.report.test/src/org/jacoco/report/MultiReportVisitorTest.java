@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.analysis.IPackageCoverage;
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.internal.analysis.BundleCoverageImpl;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class MultiReportVisitorTest {
 		private boolean visitEndCalled = false;
 
 		public void visitInfo(List<SessionInfo> sessionInfos,
-				Collection<ExecutionData> executionData) throws IOException {
+				Collection<ControlFlowExecutionData> executionData) throws IOException {
 			visitInfosCalled = true;
 		}
 
@@ -98,7 +98,7 @@ public class MultiReportVisitorTest {
 
 	private void createMockReport(IReportVisitor visitor) throws IOException {
 		final List<SessionInfo> sessions = Collections.emptyList();
-		final List<ExecutionData> executionData = Collections.emptyList();
+		final List<ControlFlowExecutionData> executionData = Collections.emptyList();
 		visitor.visitInfo(sessions, executionData);
 		IReportGroupVisitor g1 = visitor.visitGroup("g1");
 		g1.visitBundle(createBundle("b1"), null);

@@ -20,80 +20,21 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.jacoco.core.data.ExecutionData;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.AbstractExecutionDataStore;
 import org.jacoco.core.internal.ContentTypeDetector;
 import org.jacoco.core.internal.Pack200Streams;
-import org.jacoco.core.internal.analysis.ClassAnalyzer;
-import org.jacoco.core.internal.analysis.StringPool;
-import org.jacoco.core.internal.data.CRC64;
-import org.jacoco.core.internal.flow.ClassProbesAdapter;
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
 
 /**
- * An {@link Analyzer} instance processes a set of Java class files and
+ * An {@link AbstractAnalyzer} instance processes a set of Java class files and
  * calculates coverage data for them. For each class file the result is reported
  * to a given {@link ICoverageVisitor} instance. In addition the
- * {@link Analyzer} requires a {@link ExecutionDataStore} instance that holds
- * the execution data for the classes to analyze. The {@link Analyzer} offers
- * several methods to analyze classes from a variety of sources.
+ * {@link AbstractAnalyzer} requires a {@link AbstractExecutionDataStore}
+ * instance that holds the execution data for the classes to analyze. The
+ * {@link AbstractAnalyzer} offers several methods to analyze classes from a
+ * variety of sources.
  */
-public class Analyzer {
-
-	private final ExecutionDataStore executionData;
-
-	private final ICoverageVisitor coverageVisitor;
-
-	private final StringPool stringPool;
-
-	/**
-	 * Creates a new analyzer reporting to the given output.
-	 * 
-	 * @param executionData
-	 *            execution data
-	 * @param coverageVisitor
-	 *            the output instance that will coverage data for every analyzed
-	 *            class
-	 */
-	public Analyzer(final ExecutionDataStore executionData,
-			final ICoverageVisitor coverageVisitor) {
-		this.executionData = executionData;
-		this.coverageVisitor = coverageVisitor;
-		this.stringPool = new StringPool();
-	}
-
-	/**
-	 * Creates an ASM class visitor for analysis.
-	 * 
-	 * @param classid
-	 *            id of the class calculated with {@link CRC64}
-	 * @param className
-	 *            VM name of the class
-	 * @return ASM visitor to write class definition to
-	 */
-	private ClassVisitor createAnalyzingVisitor(final long classid,
-			final String className) {
-		final ExecutionData data = executionData.get(classid);
-		final boolean[] probes;
-		final boolean noMatch;
-		if (data == null) {
-			probes = null;
-			noMatch = executionData.contains(className);
-		} else {
-			probes = data.getProbes();
-			noMatch = false;
-		}
-		final ClassAnalyzer analyzer = new ClassAnalyzer(classid, noMatch,
-				probes, stringPool) {
-			@Override
-			public void visitEnd() {
-				super.visitEnd();
-				coverageVisitor.visitCoverage(getCoverage());
-			}
-		};
-		return new ClassProbesAdapter(analyzer, false);
-	}
+public abstract class AbstractAnalyzer {
 
 	/**
 	 * Analyzes the class given as a ASM reader.
@@ -101,11 +42,7 @@ public class Analyzer {
 	 * @param reader
 	 *            reader with class definitions
 	 */
-	public void analyzeClass(final ClassReader reader) {
-		final ClassVisitor visitor = createAnalyzingVisitor(
-				CRC64.checksum(reader.b), reader.getClassName());
-		reader.accept(visitor, 0);
-	}
+	public abstract void analyzeClass(final ClassReader reader);
 
 	/**
 	 * Analyzes the class definition from a given in-memory buffer.

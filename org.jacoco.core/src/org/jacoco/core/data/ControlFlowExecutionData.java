@@ -20,16 +20,16 @@ import java.util.Arrays;
  * has to be taken about the probe data array of type <code>boolean[]</code>
  * which can be modified.
  */
-public final class ExecutionData {
+public class ControlFlowExecutionData {
 
 	private final long id;
 
 	private final String name;
 
-	private final boolean[] probes;
+	protected boolean[] probes;
 
 	/**
-	 * Creates a new {@link ExecutionData} object with the given probe data.
+	 * Creates a new {@link ControlFlowExecutionData} object with the given probe data.
 	 * 
 	 * @param id
 	 *            class identifier
@@ -38,7 +38,7 @@ public final class ExecutionData {
 	 * @param probes
 	 *            probe data
 	 */
-	public ExecutionData(final long id, final String name,
+	public ControlFlowExecutionData(final long id, final String name,
 			final boolean[] probes) {
 		this.id = id;
 		this.name = name;
@@ -46,7 +46,7 @@ public final class ExecutionData {
 	}
 
 	/**
-	 * Creates a new {@link ExecutionData} object with the given probe data
+	 * Creates a new {@link ControlFlowExecutionData} object with the given probe data
 	 * length. All probes are set to <code>false</code>.
 	 * 
 	 * @param id
@@ -56,7 +56,7 @@ public final class ExecutionData {
 	 * @param probeCount
 	 *            probe count
 	 */
-	public ExecutionData(final long id, final String name, final int probeCount) {
+	public ControlFlowExecutionData(final long id, final String name, final int probeCount) {
 		this.id = id;
 		this.name = name;
 		this.probes = new boolean[probeCount];
@@ -113,7 +113,7 @@ public final class ExecutionData {
 	 * @param other
 	 *            execution data to merge
 	 */
-	public void merge(final ExecutionData other) {
+	public void merge(final ControlFlowExecutionData other) {
 		merge(other, true);
 	}
 
@@ -140,7 +140,7 @@ public final class ExecutionData {
 	 * @param flag
 	 *            merge mode
 	 */
-	public void merge(final ExecutionData other, final boolean flag) {
+	public void merge(final ControlFlowExecutionData other, final boolean flag) {
 		assertCompatibility(other.getId(), other.getName(),
 				other.getProbes().length);
 		final boolean[] otherData = other.getProbes();

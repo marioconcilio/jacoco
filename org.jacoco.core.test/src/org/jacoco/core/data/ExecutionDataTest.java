@@ -19,13 +19,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link ExecutionData}.
+ * Unit tests for {@link ControlFlowExecutionData}.
  */
 public class ExecutionDataTest {
 
 	@Test
 	public void testCreateEmpty() {
-		final ExecutionData e = new ExecutionData(5, "Example", 3);
+		final ControlFlowExecutionData e = new ControlFlowExecutionData(5, "Example", 3);
 		assertEquals(5, e.getId());
 		assertEquals("Example", e.getName());
 		assertEquals(3, e.getProbes().length);
@@ -37,7 +37,7 @@ public class ExecutionDataTest {
 	@Test
 	public void testGetters() {
 		final boolean[] data = new boolean[0];
-		final ExecutionData e = new ExecutionData(5, "Example", data);
+		final ControlFlowExecutionData e = new ControlFlowExecutionData(5, "Example", data);
 		assertEquals(5, e.getId());
 		assertEquals("Example", e.getName());
 		assertSame(data, e.getProbes());
@@ -45,7 +45,7 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testReset() {
-		final ExecutionData e = new ExecutionData(5, "Example", new boolean[] {
+		final ControlFlowExecutionData e = new ControlFlowExecutionData(5, "Example", new boolean[] {
 				true, false, true });
 		e.reset();
 		assertFalse(e.getProbes()[0]);
@@ -55,9 +55,9 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testMerge() {
-		final ExecutionData a = new ExecutionData(5, "Example", new boolean[] {
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example", new boolean[] {
 				false, true, false, true });
-		final ExecutionData b = new ExecutionData(5, "Example", new boolean[] {
+		final ControlFlowExecutionData b = new ControlFlowExecutionData(5, "Example", new boolean[] {
 				false, false, true, true });
 		a.merge(b);
 
@@ -76,9 +76,9 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testMergeSubtract() {
-		final ExecutionData a = new ExecutionData(5, "Example", new boolean[] {
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example", new boolean[] {
 				false, true, false, true });
-		final ExecutionData b = new ExecutionData(5, "Example", new boolean[] {
+		final ControlFlowExecutionData b = new ControlFlowExecutionData(5, "Example", new boolean[] {
 				false, false, true, true });
 		a.merge(b, false);
 
@@ -97,35 +97,35 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testAssertCompatibility() {
-		final ExecutionData a = new ExecutionData(5, "Example",
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example",
 				new boolean[] { true });
 		a.assertCompatibility(5, "Example", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative1() {
-		final ExecutionData a = new ExecutionData(5, "Example",
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example",
 				new boolean[] { true });
 		a.assertCompatibility(55, "Example", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative2() {
-		final ExecutionData a = new ExecutionData(5, "Example",
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example",
 				new boolean[] { true });
 		a.assertCompatibility(5, "Exxxample", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative3() {
-		final ExecutionData a = new ExecutionData(5, "Example",
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(5, "Example",
 				new boolean[] { true });
 		a.assertCompatibility(5, "Example", 3);
 	}
 
 	@Test
 	public void testToString() {
-		final ExecutionData a = new ExecutionData(Long.MAX_VALUE, "Example",
+		final ControlFlowExecutionData a = new ControlFlowExecutionData(Long.MAX_VALUE, "Example",
 				new boolean[] { true });
 		assertEquals("ExecutionData[name=Example, id=7fffffffffffffff]",
 				a.toString());

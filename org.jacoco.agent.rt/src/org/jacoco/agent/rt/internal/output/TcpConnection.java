@@ -18,14 +18,14 @@ import java.net.SocketException;
 import org.jacoco.core.runtime.IRemoteCommandVisitor;
 import org.jacoco.core.runtime.RemoteControlReader;
 import org.jacoco.core.runtime.RemoteControlWriter;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Handler for a single socket based remote connection.
  */
 class TcpConnection implements IRemoteCommandVisitor {
 
-	private final RuntimeData data;
+	private final AbstractRuntimeData data;
 
 	private final Socket socket;
 
@@ -35,7 +35,7 @@ class TcpConnection implements IRemoteCommandVisitor {
 
 	private boolean initialized;
 
-	public TcpConnection(final Socket socket, final RuntimeData data) {
+	public TcpConnection(final Socket socket, final AbstractRuntimeData data) {
 		this.socket = socket;
 		this.data = data;
 		this.initialized = false;

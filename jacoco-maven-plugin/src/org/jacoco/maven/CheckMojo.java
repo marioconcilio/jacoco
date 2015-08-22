@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.analysis.ICoverageNode;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.tools.ExecFileLoader;
 import org.jacoco.report.IReportVisitor;
 import org.jacoco.report.check.IViolationsOutput;
@@ -192,7 +192,7 @@ public class CheckMojo extends AbstractJacocoMojo implements IViolationsOutput {
 		final BundleCreator creator = new BundleCreator(getProject(),
 				fileFilter, getLog());
 		try {
-			final ExecutionDataStore executionData = loadExecutionData();
+			final ControlFlowExecutionDataStore executionData = loadExecutionData();
 			return creator.createBundle(executionData);
 		} catch (final IOException e) {
 			throw new MojoExecutionException(
@@ -200,7 +200,7 @@ public class CheckMojo extends AbstractJacocoMojo implements IViolationsOutput {
 		}
 	}
 
-	private ExecutionDataStore loadExecutionData() throws IOException {
+	private ControlFlowExecutionDataStore loadExecutionData() throws IOException {
 		final ExecFileLoader loader = new ExecFileLoader();
 		loader.load(dataFile);
 		return loader.getExecutionDataStore();

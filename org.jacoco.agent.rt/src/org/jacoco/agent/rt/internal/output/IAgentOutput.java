@@ -14,7 +14,7 @@ package org.jacoco.agent.rt.internal.output;
 import java.io.IOException;
 
 import org.jacoco.core.runtime.AgentOptions;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.AbstractRuntimeData;
 
 /**
  * Common interface for different implementations that outputs execution data
@@ -33,8 +33,8 @@ public interface IAgentOutput {
 	 * @throws Exception
 	 *             in case startup fails
 	 */
-	public void startup(final AgentOptions options, final RuntimeData data)
-			throws Exception;
+	public void startup(final AgentOptions options,
+			final AbstractRuntimeData data) throws Exception;
 
 	/**
 	 * Shutdown the agent controller and clean up any resources it has created.

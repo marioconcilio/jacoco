@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.jacoco.core.data.ExecutionData;
+import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.SessionInfo;
 import org.junit.Rule;
@@ -50,7 +50,7 @@ public class ExecDumpTest {
 		final FileOutputStream out = new FileOutputStream(f);
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		writer.visitSessionInfo(new SessionInfo("testid", 1, 2));
-		writer.visitClassExecution(new ExecutionData(0x1234, "foo/MyClass",
+		writer.visitClassExecution(new ControlFlowExecutionData(0x1234, "foo/MyClass",
 				new boolean[] { false, true, true }));
 		writer.flush();
 		out.close();

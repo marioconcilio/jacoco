@@ -13,7 +13,7 @@
 /**
  * <p>
  * Coverage calculation and analysis. The coverage information is calculated
- * with an {@link org.jacoco.core.analysis.Analyzer} instance from class files
+ * with an {@link org.jacoco.core.analysis.ControlFlowAnalyzer} instance from class files
  * (target) and
  * {@linkplain org.jacoco.core.data.IExecutionDataVisitor execution data}
  * (actual).

@@ -15,18 +15,18 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
-import org.jacoco.core.analysis.Analyzer;
+import org.jacoco.core.analysis.ControlFlowAnalyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.ILine;
 import org.jacoco.core.analysis.ISourceFileCoverage;
-import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ControlFlowExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.internal.analysis.CounterImpl;
 import org.jacoco.core.runtime.IRuntime;
-import org.jacoco.core.runtime.RuntimeData;
+import org.jacoco.core.runtime.ControlFlowRuntimeData;
 import org.jacoco.core.runtime.SystemPropertiesRuntime;
 import org.jacoco.core.test.TargetLoader;
 import org.junit.Before;
@@ -66,19 +66,19 @@ public abstract class ValidationTestBase {
 		loader = new TargetLoader();
 		final ClassReader reader = new ClassReader(
 				TargetLoader.getClassData(target));
-		final ExecutionDataStore store = execute(reader);
+		final ControlFlowExecutionDataStore store = execute(reader);
 		analyze(reader, store);
 		source = Source.getSourceFor(target);
 	}
 
-	private ExecutionDataStore execute(final ClassReader reader)
+	private ControlFlowExecutionDataStore execute(final ClassReader reader)
 			throws Exception {
-		RuntimeData data = new RuntimeData();
+		ControlFlowRuntimeData data = new ControlFlowRuntimeData();
 		IRuntime runtime = new SystemPropertiesRuntime();
 		runtime.startup(data);
 		final byte[] bytes = new Instrumenter(runtime).instrument(reader);
 		run(loader.add(target, bytes));
-		final ExecutionDataStore store = new ExecutionDataStore();
+		final ControlFlowExecutionDataStore store = new ControlFlowExecutionDataStore();
 		data.collect(store, new SessionInfoStore(), false);
 		runtime.shutdown();
 		return store;
@@ -87,9 +87,9 @@ public abstract class ValidationTestBase {
 	protected abstract void run(final Class<?> targetClass) throws Exception;
 
 	private void analyze(final ClassReader reader,
-			final ExecutionDataStore store) {
+			final ControlFlowExecutionDataStore store) {
 		final CoverageBuilder builder = new CoverageBuilder();
-		final Analyzer analyzer = new Analyzer(store, builder);
+		final ControlFlowAnalyzer analyzer = new ControlFlowAnalyzer(store, builder);
 		analyzer.analyzeClass(reader);
 		final Collection<IClassCoverage> classes = builder.getClasses();
 		assertEquals(1, classes.size(), 0.0);
