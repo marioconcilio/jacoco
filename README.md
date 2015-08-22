@@ -1,12 +1,7 @@
-JaCoCo Java Code Coverage Library
-=================================
+JaCoCo Java Code Coverage Library + ba-dua Bitwise Algorithm - powered Definition-Use Association coverage
+==========================================================================================================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jacoco/org.jacoco.core/badge.svg?style=flat)](http://search.maven.org/#search|ga|1|g%3Aorg.jacoco)
+This is a Fork of Jacoco 0.7.5 with ba-dua 0.0.6-SNAPSHOT.
+When finished is suppose to use traditional jacoco API to collect also data-flow coverage.
 
-JaCoCo is a free Java code coverage library distributed under the Eclipse Public
-License. Check the [project homepage](http://www.eclemma.org/jacoco)
-for downloads, documentation and feedback.
-
-Please use our [mailing list](https://groups.google.com/forum/?fromgroups=#!forum/jacoco)
-for questions regarding JaCoCo which are not already covered by the
-[extensive documentation](http://www.eclemma.org/jacoco/trunk/doc/).
+It is a work done by SAEG (Software Analysis and Experimentation Group) from EACH (Escola de Artes, Ciências e Humanidades) USP (Universidade de São Paulo).
