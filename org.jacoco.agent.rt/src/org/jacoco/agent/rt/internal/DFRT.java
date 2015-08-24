@@ -28,8 +28,9 @@ public final class DFRT {
 	public static void init() {
 	}
 
-    public static long[] getData(final long classId, final int size) {
-        return DATA.getExecutionData(classId, String.valueOf(classId) ,size).getLongProbes();
-    }
+	public static long[] getData(final long classId, final String className,
+			final int size) {
+		return DATA.getExecutionData(classId, className, size).getLongProbes();
+	}
 
 }

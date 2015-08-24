@@ -64,7 +64,7 @@ public class CoverageTransformer implements ClassFileTransformer {
 			final AgentOptions options, final IExceptionLogger logger) {
 		dataflow = options.isDataflow();
 		if (dataflow) {
-			System.out.println("Instrumentation with BA-DUA");
+			System.out.println("Instrumentation with latest BA-DUA");
 			this.instrumenterdf = new br.usp.each.saeg.badua.core.instr.Instrumenter(
 					DFRT.class);
 		} else {
@@ -100,7 +100,9 @@ public class CoverageTransformer implements ClassFileTransformer {
 
 		try {
 			classFileDumper.dump(classname, classfileBuffer);
-			return instrumenter.instrument(classfileBuffer, classname);
+			return dataflow ? instrumenterdf.instrument(classfileBuffer,
+					classname) : instrumenter.instrument(classfileBuffer,
+					classname);
 		} catch (final Exception ex) {
 			final IllegalClassFormatException wrapper = new IllegalClassFormatException(
 					ex.getMessage());

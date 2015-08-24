@@ -43,9 +43,11 @@ public final class PreMain {
 		final AgentOptions agentOptions = new AgentOptions(options);
 
 		final Agent agent = Agent.getInstance(agentOptions);
-		System.out.println("Executing Jacoco+Badua: dataflow Coverage -> "+agentOptions.isDataflow());
-		
-		IRuntime runtime = createRuntime(inst);
+		System.out
+				.println("Executing latest Jacoco+Badua: dataflow Coverage -> "
+						+ agentOptions.isDataflow());
+
+		final IRuntime runtime = createRuntime(inst);
 		runtime.startup(agent.getData());
 		inst.addTransformer(new CoverageTransformer(runtime, agentOptions,
 				IExceptionLogger.SYSTEM_ERR));

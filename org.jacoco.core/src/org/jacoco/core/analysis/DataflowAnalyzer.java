@@ -16,6 +16,7 @@ import org.jacoco.core.data.AbstractExecutionDataStore;
 import org.jacoco.core.data.ControlFlowExecutionData;
 import org.jacoco.core.internal.analysis.StringPool;
 import org.jacoco.core.internal.analysis.dua.ClassAnalyzer;
+import org.jacoco.core.internal.data.CRC64;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -63,7 +64,7 @@ public class DataflowAnalyzer extends AbstractAnalyzer {
 			return;
 		}
 
-		final boolean[] probes = getProbes(cn.name);
+		final boolean[] probes = getProbes(CRC64.checksum(reader.b));
 
 		if (probes == null) {
 			return;
@@ -75,9 +76,9 @@ public class DataflowAnalyzer extends AbstractAnalyzer {
 		coverageVisitor.visitCoverage(analyzer.getCoverage());
 	}
 
-	private boolean[] getProbes(final String className) {
+	private boolean[] getProbes(final long classId) {
 		final ControlFlowExecutionData executionData = executionDataStore
-				.get(className.hashCode());
+				.get(classId);
 		if (executionData != null) {
 			return executionData.getProbes();
 		}
