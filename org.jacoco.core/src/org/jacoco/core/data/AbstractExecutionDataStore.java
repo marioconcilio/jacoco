@@ -12,10 +12,10 @@
 package org.jacoco.core.data;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * In-memory data store for execution data. The data can be added through its
@@ -29,7 +29,7 @@ public abstract class AbstractExecutionDataStore implements
 		IExecutionDataVisitor {
 
 	// HLR TODO check if it is necessary to use ConcurrentHashMap
-	protected final Map<Long, ControlFlowExecutionData> entries = new HashMap<Long, ControlFlowExecutionData>();
+	protected final Map<Long, ControlFlowExecutionData> entries = new ConcurrentHashMap<Long, ControlFlowExecutionData>();
 
 	protected final Set<String> names = new HashSet<String>();
 
