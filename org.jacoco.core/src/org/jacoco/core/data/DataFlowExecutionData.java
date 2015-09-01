@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.jacoco.core.data;
 
+import java.util.Arrays;
+
 import br.usp.each.saeg.commons.BitSetIterator;
 import br.usp.each.saeg.commons.BitSetUtils;
 
@@ -45,6 +47,15 @@ public class DataFlowExecutionData extends ControlFlowExecutionData {
 
 	public long[] getLongProbes() {
 		return longProbes;
+	}
+
+	/**
+	 * Sets all probes to <code>false</code>.
+	 */
+	@Override
+	public void reset() {
+		Arrays.fill(probes, false);
+		Arrays.fill(longProbes, 0);
 	}
 
 }
