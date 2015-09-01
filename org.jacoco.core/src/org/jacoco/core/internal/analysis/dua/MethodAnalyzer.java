@@ -89,33 +89,30 @@ public class MethodAnalyzer {
 	 */
 	public void visit() {
 		final int[] lines = getLines();
-		final DefUseChain[] duaI = getDuas(methodNode);
+		final DefUseChain[] duas = DefUseChain.toBasicBlock(
+				getDuas(methodNode), leaders, basicBlocks);
+
 		int indexDua = 0;
-		for (final DefUseChain defUseChain : duaI) {
+		for (final DefUseChain defUseChain : duas) {
 
-			// transform given defusechain to BasicBlock
-			final DefUseChain bbchain = toBB(defUseChain);
-
-			if (bbchain != null) {
-				final int defLine = lines[defUseChain.def];
-				final int useLine = lines[defUseChain.use];
-				int targetLines = -1;
-				if (defUseChain.target != -1) {
-					targetLines = lines[defUseChain.target];
-				}
-				String varName = getName(defUseChain);
-
-				if (varName == null) {
-					varName = "random_" + Math.random();
-				}
-
-				final int status = getStatus(indexDua);
-				final IDua dua = new Dua(defLine, useLine, targetLines,
-						varName, status);
-				coverage.addDua(dua);
-
-				indexDua++;
+			final int defLine = lines[defUseChain.def];
+			final int useLine = lines[defUseChain.use];
+			int targetLines = -1;
+			if (defUseChain.target != -1) {
+				targetLines = lines[defUseChain.target];
 			}
+			String varName = getName(defUseChain);
+
+			if (varName == null) {
+				varName = "random_" + Math.random();
+			}
+
+			final int status = getStatus(indexDua);
+			final IDua dua = new Dua(defLine, useLine, targetLines, varName,
+					status);
+			coverage.addDua(dua);
+
+			indexDua++;
 		}
 	}
 
