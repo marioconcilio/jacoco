@@ -134,9 +134,8 @@ public class MethodAnalyzer {
 				analyzer.getDefUseFrames(), analyzer.getVariables(),
 				analyzer.getSuccessors(), analyzer.getPredecessors());
 
-		final DefUseChain[] duas = DefUseChain.toBasicBlock(chains,
-				analyzer.getLeaders(), analyzer.getBasicBlocks());
-		return duas;
+		return DefUseChain.toBasicBlock(chains, analyzer.getLeaders(),
+				analyzer.getBasicBlocks());
 	}
 
 	private int getStatus(final int i) {
