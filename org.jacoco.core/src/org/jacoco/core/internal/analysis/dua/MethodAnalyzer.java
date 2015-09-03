@@ -24,7 +24,6 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 import br.usp.each.saeg.asm.defuse.DefUseAnalyzer;
 import br.usp.each.saeg.asm.defuse.DefUseChain;
-import br.usp.each.saeg.asm.defuse.DefUseFrame;
 import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.Field;
 import br.usp.each.saeg.asm.defuse.Local;
@@ -38,13 +37,9 @@ public class MethodAnalyzer {
 
 	private final DuaMethodCoverage coverage;
 	private final MethodNode methodNode;
-
 	private final String className;
-	private final int methodProbeIndex;
 	private final boolean[] probes;
-	private int[][] basicBlocks;
-	private int[] leaders;
-	private Variable[] variables;
+	private final int methodProbeIndex;
 
 	/**
 	 * New Method analyzer for the given probe data.
@@ -88,40 +83,60 @@ public class MethodAnalyzer {
 	 * Visits a method of the class.
 	 */
 	public void visit() {
+		final DefUseAnalyzer analyzer = getAnalyzer();
+		final DefUseChain[] duas = getDuas(analyzer);
+		final Variable[] variables = analyzer.getVariables();
 		final int[] lines = getLines();
-		final DefUseChain[] duas = DefUseChain.toBasicBlock(
-				getDuas(methodNode), leaders, basicBlocks);
 
-		int indexDua = 0;
-		for (final DefUseChain defUseChain : duas) {
+		for (int i = 0; i < duas.length; i++) {
+			final DefUseChain dua = duas[i];
 
-			final int defLine = lines[defUseChain.def];
-			final int useLine = lines[defUseChain.use];
-			int targetLines = -1;
-			if (defUseChain.target != -1) {
-				targetLines = lines[defUseChain.target];
+			// def
+			final int defLine = lines[dua.def];
+
+			// use
+			final int useLine = lines[dua.use];
+
+			// target
+			int targetLine = -1;
+			if (dua.target != -1) {
+				targetLine = lines[dua.target];
 			}
-			String varName = getName(defUseChain);
 
+			// var
+			String varName = getVarName(dua, variables[dua.var]);
 			if (varName == null) {
 				varName = "random_" + Math.random();
 			}
 
-			final int status = getStatus(indexDua);
-			final IDua dua = new Dua(defLine, useLine, targetLines, varName,
-					status);
-			coverage.addDua(dua);
+			// status
+			final int status = getStatus(i);
 
-			indexDua++;
+			final IDua finalDua = new Dua(defLine, useLine, targetLine,
+					varName, status);
+			coverage.addDua(finalDua);
 		}
+
 	}
 
-	private DefUseChain toBB(final DefUseChain c) {
-		if (DefUseChain.isGlobal(c, leaders, basicBlocks)) {
-			return new DefUseChain(leaders[c.def], leaders[c.use],
-					c.target == -1 ? -1 : leaders[c.target], c.var);
+	private DefUseAnalyzer getAnalyzer() {
+		final DefUseAnalyzer analyzer = new DefUseAnalyzer();
+		try {
+			analyzer.analyze(className, methodNode);
+		} catch (final AnalyzerException e) {
+			throw new RuntimeException(e);
 		}
-		return null;
+		return analyzer;
+	}
+
+	private DefUseChain[] getDuas(final DefUseAnalyzer analyzer) {
+		final DefUseChain[] chains = new DepthFirstDefUseChainSearch().search(
+				analyzer.getDefUseFrames(), analyzer.getVariables(),
+				analyzer.getSuccessors(), analyzer.getPredecessors());
+
+		final DefUseChain[] duas = DefUseChain.toBasicBlock(chains,
+				analyzer.getLeaders(), analyzer.getBasicBlocks());
+		return duas;
 	}
 
 	private int getStatus(final int i) {
@@ -153,23 +168,19 @@ public class MethodAnalyzer {
 		return lines;
 	}
 
-	private String getName(final DefUseChain dua) {
-		final Variable var = variables[dua.var];
-		String name;
+	private String getVarName(final DefUseChain dua, final Variable var) {
 		if (var instanceof Field) {
-			name = ((Field) var).name;
+			return ((Field) var).name;
 		} else {
 			try {
-				name = varName(dua.use, ((Local) var).var, methodNode);
+				return getName(dua.use, ((Local) var).var, methodNode);
 			} catch (final Exception e) {
-				name = null;
+				return null;
 			}
 		}
-
-		return name;
 	}
 
-	private String varName(final int insn, final int index, final MethodNode mn) {
+	private String getName(final int insn, final int index, final MethodNode mn) {
 		for (final LocalVariableNode local : mn.localVariables) {
 			if (local.index == index) {
 				final int start = mn.instructions.indexOf(local.start);
@@ -182,22 +193,4 @@ public class MethodAnalyzer {
 		throw new RuntimeException("Variable not found");
 	}
 
-	private DefUseChain[] getDuas(final MethodNode methodNode) {
-		final DefUseAnalyzer analyzer = new DefUseAnalyzer();
-		try {
-			analyzer.analyze(className, methodNode);
-		} catch (final AnalyzerException e) {
-			throw new RuntimeException(e);
-		}
-
-		final DefUseFrame[] frames = analyzer.getDefUseFrames();
-		variables = analyzer.getVariables();
-		final int[][] successors = analyzer.getSuccessors();
-		final int[][] predecessors = analyzer.getPredecessors();
-		basicBlocks = analyzer.getBasicBlocks();
-		leaders = analyzer.getLeaders();
-		// defuse with instructions
-		return new DepthFirstDefUseChainSearch().search(frames, variables,
-				successors, predecessors);
-	}
 }
