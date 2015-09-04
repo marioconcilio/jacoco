@@ -110,12 +110,12 @@ public class ClassAnalyzer {
 		methodAnalyzer.visit();
 
 		final IDuaMethodCoverage methodCoverage = methodAnalyzer.getCoverage();
-		if (methodCoverage.getDuas().size() > 0) {
+		if (methodAnalyzer.duasBBsize > 0) {
 			// Only consider methods that actually contain code
 			coverage.addMethod(methodCoverage);
 		}
 
-		methodProbeIndex += ((methodCoverage.getDuas().size() + 63) / 64) * 64;
+		methodProbeIndex += ((methodAnalyzer.duasBBsize + 63) / 64) * 64;
 	}
 
 }

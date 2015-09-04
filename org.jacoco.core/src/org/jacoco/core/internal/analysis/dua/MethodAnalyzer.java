@@ -28,6 +28,7 @@ import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.Field;
 import br.usp.each.saeg.asm.defuse.Local;
 import br.usp.each.saeg.asm.defuse.Variable;
+import br.usp.each.saeg.commons.ArrayUtils;
 
 /**
  * A {@link MethodProbesVisitor} that analyzes which statements and branches of
@@ -40,6 +41,8 @@ public class MethodAnalyzer {
 	private final String className;
 	private final boolean[] probes;
 	private final int methodProbeIndex;
+
+	public int duasBBsize;
 
 	/**
 	 * New Method analyzer for the given probe data.
@@ -84,12 +87,24 @@ public class MethodAnalyzer {
 	 */
 	public void visit() {
 		final DefUseAnalyzer analyzer = getAnalyzer();
-		final DefUseChain[] duas = getDuas(analyzer);
+
+		final DefUseChain[] duasIns = new DepthFirstDefUseChainSearch().search(
+				analyzer.getDefUseFrames(), analyzer.getVariables(),
+				analyzer.getSuccessors(), analyzer.getPredecessors());
+
+		final DefUseChain[] duasBB = DefUseChain.toBasicBlock(duasIns,
+				analyzer.getLeaders(), analyzer.getBasicBlocks());
+		duasBBsize = duasBB.length;
+
 		final Variable[] variables = analyzer.getVariables();
 		final int[] lines = getLines();
 
-		for (int i = 0; i < duas.length; i++) {
-			final DefUseChain dua = duas[i];
+		for (int i = 0; i < duasIns.length; i++) {
+			final DefUseChain dua = duasIns[i];
+			if (!DefUseChain.isGlobal(dua, analyzer.getLeaders(),
+					analyzer.getBasicBlocks())) {
+				continue;
+			}
 
 			// def
 			final int defLine = lines[dua.def];
@@ -110,7 +125,9 @@ public class MethodAnalyzer {
 			}
 
 			// status
-			final int status = getStatus(i);
+			final DefUseChain blockChain = toBasicBlock(dua,
+					analyzer.getLeaders());
+			final int status = getStatus(ArrayUtils.indexOf(duasBB, blockChain));
 
 			final IDua finalDua = new Dua(defLine, useLine, targetLine,
 					varName, status);
@@ -127,15 +144,6 @@ public class MethodAnalyzer {
 			throw new RuntimeException(e);
 		}
 		return analyzer;
-	}
-
-	private DefUseChain[] getDuas(final DefUseAnalyzer analyzer) {
-		final DefUseChain[] chains = new DepthFirstDefUseChainSearch().search(
-				analyzer.getDefUseFrames(), analyzer.getVariables(),
-				analyzer.getSuccessors(), analyzer.getPredecessors());
-
-		return DefUseChain.toBasicBlock(chains, analyzer.getLeaders(),
-				analyzer.getBasicBlocks());
 	}
 
 	private int getStatus(final int i) {
@@ -190,6 +198,14 @@ public class MethodAnalyzer {
 			}
 		}
 		throw new RuntimeException("Variable not found");
+	}
+
+	// TODO use new asm-defuse-0.0.4, when it is ready
+	private static DefUseChain toBasicBlock(final DefUseChain chain,
+			final int[] leaders) {
+		return new DefUseChain(leaders[chain.def], leaders[chain.use],
+				chain.isPredicateChain() ? leaders[chain.target] : -1,
+				chain.var);
 	}
 
 }
