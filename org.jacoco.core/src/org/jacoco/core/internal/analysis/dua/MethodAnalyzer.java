@@ -129,7 +129,7 @@ public class MethodAnalyzer {
 					analyzer.getLeaders());
 			final int status = getStatus(ArrayUtils.indexOf(duasBB, blockChain));
 
-			final IDua finalDua = new Dua(defLine, useLine, targetLine,
+			final IDua finalDua = new Dua(i, defLine, useLine, targetLine,
 					varName, status);
 			coverage.addDua(finalDua);
 		}

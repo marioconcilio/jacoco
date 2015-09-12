@@ -13,6 +13,8 @@ package org.jacoco.core.analysis.dua;
 
 public class Dua implements IDua {
 
+	private final int index;
+
 	private final int def;
 
 	private final int use;
@@ -23,13 +25,23 @@ public class Dua implements IDua {
 
 	private final int status;
 
-	public Dua(final int def, final int use, final int target, final String var,
-			final int status) {
+	public Dua(final int index, final int def, final int use, final int target,
+			final String var, final int status) {
+		this.index = index;
 		this.def = def;
 		this.use = use;
 		this.target = target;
 		this.var = var;
 		this.status = status;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jacoco.core.analysis.IDua#getIndex()
+	 */
+	public int getIndex() {
+		return index;
 	}
 
 	/*
@@ -79,8 +91,8 @@ public class Dua implements IDua {
 
 	@Override
 	public String toString() {
-		return "Dua [def=" + def + ", use=" + use + ", target=" + target + ", var=" + var + ", status=" + status + "]";
+		return "Dua [def=" + def + ", use=" + use + ", target=" + target
+				+ ", var=" + var + ", status=" + status + "]";
 	}
-
 
 }
