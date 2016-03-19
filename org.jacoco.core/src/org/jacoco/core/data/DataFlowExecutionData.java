@@ -50,6 +50,21 @@ public class DataFlowExecutionData extends ControlFlowExecutionData {
 	}
 
 	/**
+	 * Checks whether any probe has been hit.
+	 * 
+	 * @return <code>true</code>, if at least one probe has been hit
+	 */
+	@Override
+	public boolean hasHits() {
+		for (final boolean p : getProbes()) {
+			if (p) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Sets all probes to <code>false</code>.
 	 */
 	@Override

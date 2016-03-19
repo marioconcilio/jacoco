@@ -44,7 +44,7 @@ public final class PreMain {
 
 		final Agent agent = Agent.getInstance(agentOptions);
 		System.out
-				.println("Executing latest Jacoco+Badua: dataflow Coverage -> "
+				.println("Executing latest Jacoco+Badua (no empty probes): dataflow Coverage -> "
 						+ agentOptions.isDataflow());
 
 		final IRuntime runtime = createRuntime(inst);

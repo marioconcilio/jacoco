@@ -29,7 +29,8 @@ public class ControlFlowExecutionData {
 	protected boolean[] probes;
 
 	/**
-	 * Creates a new {@link ControlFlowExecutionData} object with the given probe data.
+	 * Creates a new {@link ControlFlowExecutionData} object with the given
+	 * probe data.
 	 * 
 	 * @param id
 	 *            class identifier
@@ -46,8 +47,8 @@ public class ControlFlowExecutionData {
 	}
 
 	/**
-	 * Creates a new {@link ControlFlowExecutionData} object with the given probe data
-	 * length. All probes are set to <code>false</code>.
+	 * Creates a new {@link ControlFlowExecutionData} object with the given
+	 * probe data length. All probes are set to <code>false</code>.
 	 * 
 	 * @param id
 	 *            class identifier
@@ -56,7 +57,8 @@ public class ControlFlowExecutionData {
 	 * @param probeCount
 	 *            probe count
 	 */
-	public ControlFlowExecutionData(final long id, final String name, final int probeCount) {
+	public ControlFlowExecutionData(final long id, final String name,
+			final int probeCount) {
 		this.id = id;
 		this.name = name;
 		this.probes = new boolean[probeCount];
@@ -96,6 +98,20 @@ public class ControlFlowExecutionData {
 	 */
 	public void reset() {
 		Arrays.fill(probes, false);
+	}
+
+	/**
+	 * Checks whether any probe has been hit.
+	 * 
+	 * @return <code>true</code>, if at least one probe has been hit
+	 */
+	public boolean hasHits() {
+		for (final boolean p : probes) {
+			if (p) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
