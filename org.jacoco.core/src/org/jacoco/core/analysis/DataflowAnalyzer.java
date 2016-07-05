@@ -72,7 +72,7 @@ public class DataflowAnalyzer extends AbstractAnalyzer {
 
 		final ClassAnalyzer analyzer = new ClassAnalyzer(cn, probes, stringPool);
 
-		analyzer.visit();
+		analyzer.visit(cn);
 		coverageVisitor.visitCoverage(analyzer.getCoverage());
 	}
 

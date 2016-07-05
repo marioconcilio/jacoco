@@ -31,7 +31,7 @@ public class ClassAnalyzer {
 	private final StringPool stringPool;
 	private int methodProbeIndex = 0;
 
-	private final DuaClassCoverage coverage;
+	private DuaClassCoverage coverage;
 
 	/**
 	 * Creates a new analyzer that builds coverage data for a class.
@@ -49,11 +49,7 @@ public class ClassAnalyzer {
 		this.methods = classNode.methods;
 		this.probes = probes;
 		this.stringPool = stringPool;
-		final String[] interfaces = classNode.interfaces
-				.toArray(new String[classNode.interfaces.size()]);
-		this.coverage = new DuaClassCoverage(stringPool.get(classNode.name),
-				classid, stringPool.get(classNode.signature),
-				stringPool.get(classNode.superName), stringPool.get(interfaces));
+
 	}
 
 	/**
@@ -68,8 +64,16 @@ public class ClassAnalyzer {
 
 	/**
 	 * Visits the header of the class.
+	 * 
+	 * @param classNode
 	 */
-	public void visit() {
+	public void visit(final ClassNode classNode) {
+		final String[] interfaces = classNode.interfaces
+				.toArray(new String[classNode.interfaces.size()]);
+		coverage = new DuaClassCoverage(stringPool.get(classNode.name),
+				classid, stringPool.get(classNode.signature),
+				stringPool.get(classNode.superName), stringPool.get(interfaces));
+
 		int methodId = 0;
 		for (final MethodNode method : methods) {
 			// Does not instrument:
