@@ -204,7 +204,7 @@ public class MethodAnalyzer {
 	private static DefUseChain toBasicBlock(final DefUseChain chain,
 			final int[] leaders) {
 		return new DefUseChain(leaders[chain.def], leaders[chain.use],
-				chain.isPredicateChain() ? leaders[chain.target] : -1,
+				chain.target != -1 ? leaders[chain.target] : -1,
 				chain.var);
 	}
 
